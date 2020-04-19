@@ -1,0 +1,69 @@
+query result {
+  channels {
+    id
+    title
+  }
+}
+
+query result {
+  widget(client: "ard", widgetId: "4o5DEpNx9uMOSmAceOCass") {
+    id
+    title
+    teasers {
+      ...f_teaser
+    }
+  }
+}
+
+fragment f_teaser on Teaser {
+  shortTitle
+  mediumTitle
+  longTitle
+  duration
+  broadcastedOn
+  subtitled
+  images {
+    ...f_images
+  }
+}
+
+fragment f_images on TeaserImages {
+  aspect16x9 {
+    src
+  }
+}
+
+
+#####
+query result {
+  widget(client: "ard", widgetId: "16tmBoMKT0iqkyc4ycwgIE") {
+    id
+    title
+    teasers {
+      ...f_teaser
+    }
+  }
+}
+
+fragment f_teaser on Teaser {
+  id
+  shortTitle
+  mediumTitle
+  longTitle
+  duration
+  broadcastedOn
+  subtitled
+  type
+  images {
+    ...f_images
+  }
+}
+
+fragment f_images on TeaserImages {
+  aspect16x9 {
+    src
+  }
+  aspect3x4 {
+    src
+  }
+}
