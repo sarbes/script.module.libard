@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
-import urllib,re,random,datetime
+import re,random,datetime
 import sys
 from datetime import date, timedelta
 
@@ -47,9 +47,7 @@ class libard(lm4):
 			'libArdListShow':self.libArdListShow,
 			'libArdListChannelHome':self.libArdListChannelHome,
 			'libArdListChannel':self.libArdListChannel,
-			'libArdListChannelDate':self.libArdListChannelDate,
 			'libArdListChannelDateVideos':self.libArdListChannelDateVideos,
-			'libArdListSearch':self.libArdListSearch,
 		})
 		
 		self.searchModes = {
@@ -97,15 +95,15 @@ class libard(lm4):
 		return channels
 		
 	def libArdListChannel(self):
+		import json
 		channels = o.parseChannels()
 		for channel in channels['items']:
-			channel['params']['mode'] = 'libArdListChannelDate'
+			channel['params']['mode'] = 'libMediathekListDate'
+			channel['params']['subParams'] = json.dumps({'mode':'libArdListChannelDateVideos','channel':channel['params']['channel']})
 		return channels
 			
-	def libArdListChannelDate(self):
-		return self.populateDirDate('libArdListChannelDateVideos',self.params['channel'],True)
-		
 	def libArdListChannelDateVideos(self):
+		print(self.params['channel'],self.params['yyyymmdd'])
 		return o.parseProgram(self.params['channel'],self.params['yyyymmdd'])
 
 	def libArdPlay(self):

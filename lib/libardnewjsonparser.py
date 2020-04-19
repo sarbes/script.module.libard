@@ -73,12 +73,14 @@ class parser:
 		return self.result
 
 	def parseProgram(self,client='daserste',startDate='2019-08-30'):
-		qlRequest = {}
-		qlRequest['query'] = q.queryProgramPage + q.fragmentTeaser + q.fragmentTeaserImages
-		qlRequest['variables'] = {}
-		qlRequest['variables']['client'] = client
-		qlRequest['variables']['startDate'] = startDate
-		j = requests.post(graphqlUrl,headers=headers,data=json.dumps(qlRequest)).json()
+		p = json.dumps({'query': q.queryProgramPage + q.fragmentTeaser + q.fragmentTeaserImages,'variables':f'{{"client":"{client}","startDate":"{startDate}"}}'})
+		#qlRequest = {}
+		#qlRequest['query'] = q.queryProgramPage + q.fragmentTeaser + q.fragmentTeaserImages
+		#qlRequest['variables'] = {}
+		#qlRequest['variables']['client'] = client
+		#qlRequest['variables']['startDate'] = startDate
+		j = requests.post(graphqlUrl,headers=headers,data=p).json()
+		print(json.dumps(j))
 		for teaser in j['data']['programPage']['widgets'][0]['teasers']:
 			self._grabTeaser(teaser)
 		return self.result
