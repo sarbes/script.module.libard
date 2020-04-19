@@ -35,8 +35,10 @@ channels = {
 			
 class libard(lm4):
 	def __init__(self):
+		lm4.__init__(self)
 		self.defaultMode = 'libArdListMain'
-		self.modes = {
+
+		self.modes.update({
 			'libArdListMain':self.libArdListMain,
 			'libArdListDefaultPage':self.libArdListDefaultPage,
 			'libArdListWidget':self.libArdListWidget,
@@ -47,8 +49,13 @@ class libard(lm4):
 			'libArdListChannel':self.libArdListChannel,
 			'libArdListChannelDate':self.libArdListChannelDate,
 			'libArdListChannelDateVideos':self.libArdListChannelDateVideos,
-			'libArdSearch':self.libArdSearch,
+			'libArdListSearch':self.libArdListSearch,
+		})
+		
+		self.searchModes = {
+			'libArdListSearch': self.libArdListSearch,
 		}
+
 		self.playbackModes = {
 			'libArdPlay':self.libArdPlay,
 		}
@@ -60,6 +67,7 @@ class libard(lm4):
 		l.append({'metadata':{'name':self.translation(32133)}, 'params':{'mode':'libArdListChannel'}, 'type':'dir'})
 		l.append({'metadata':{'name':self.translation(32144)}, 'params':{'mode':'libArdListWidget', 'widgetId':'16tmBoMKT0iqkyc4ycwgIE', 'content':'movies'}, 'type':'dir'})
 		l.append({'metadata':{'name':self.translation(32145)}, 'params':{'mode':'libArdListChannelHome'}, 'type':'dir'})
+		l.append({'metadata':{'name':self.translation(32139)}, 'params':{'mode':'libMediathekSearch', 'client':'ard', 'searchMode':'libArdListSearch'}, 'type':'dir'})
 		#l.append({'metadata':{'name':self.translation(31039)}, 'params':{'mode':'libArdSearch'}, 'type':'dir'})
 		return {'items':l,'name':'root'}
 		
@@ -103,7 +111,6 @@ class libard(lm4):
 	def libArdPlay(self):
 		return o.parseVideo(self.params['id'])
 
-	def libArdSearch(self):
-		search_string = self.getSearchString()
-		return o.parseSearchVOD(self.params['client'],search_string)
+	def libArdListSearch(self,searchString):
+		return o.parseSearchVOD(self.params['client'],searchString)
 		
